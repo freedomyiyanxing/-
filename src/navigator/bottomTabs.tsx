@@ -28,12 +28,9 @@ interface IProps {
   route: Route;
 }
 
-const Stack = createBottomTabNavigator<RootTabParamList>();
+const Tab = createBottomTabNavigator<RootTabParamList>();
 
 const getHeaderTitle = (route: Route): string => {
-  // const routeName = route.state
-  //   ? route.state.routes[route.state.index].name
-  //   : route.params?.screen || 'home';
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'home';
   switch (routeName) {
     case 'home':
@@ -58,39 +55,39 @@ const BottomTab: React.FC<IProps> = ({ navigation, route }) => {
 
   return (
     <>
-      <Stack.Navigator
+      <Tab.Navigator
         tabBarOptions={{
           activeTintColor: '#f83819',
         }}>
-        <Stack.Screen
+        <Tab.Screen
           name="home"
           component={Home}
           options={{
             tabBarLabel: '首页',
           }}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="listen"
           component={Listen}
           options={{
             tabBarLabel: '我听',
           }}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="found"
           component={Found}
           options={{
             tabBarLabel: '发现',
           }}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="account"
           component={Account}
           options={{
             tabBarLabel: '我的',
           }}
         />
-      </Stack.Navigator>
+      </Tab.Navigator>
     </>
   );
 };

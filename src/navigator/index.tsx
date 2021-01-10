@@ -15,9 +15,7 @@ import Details from '@pages/details';
 import BottomTab from '@navigator/bottomTabs';
 
 export type RootStackParamList = {
-  BottomTabs: {
-    screen?: string;
-  };
+  BottomTabs: undefined;
   Details: {
     id: number;
   };
