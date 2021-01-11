@@ -38,6 +38,7 @@ const Navigator: React.FC = () => {
           gestureDirection: 'horizontal',
           headerStatusBarHeight: StatusBar.currentHeight,
           headerStyle: {
+            height: 60,
             backgroundColor: '#f88c16',
             ...Platform.select({
               android: {
@@ -45,6 +46,10 @@ const Navigator: React.FC = () => {
                 borderBottomWidth: StyleSheet.hairlineWidth,
               },
             }),
+          },
+          headerTintColor: '#333333',
+          headerTitleStyle: {
+            fontSize: 14,
           },
         }}>
         <Stack.Screen name="BottomTabs" component={BottomTab} />

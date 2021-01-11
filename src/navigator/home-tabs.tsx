@@ -15,6 +15,7 @@ const HomeTabs: React.FC = () => {
         inactiveTintColor: '#999999',
         tabStyle: {
           width: 80,
+          height: 40,
         },
         indicatorStyle: {
           height: 2,

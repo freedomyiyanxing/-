@@ -46,8 +46,6 @@ const Carousel: React.FC = () => {
     setIndex(idx);
   };
 
-  console.log(index, '滑动');
-
   return (
     <View>
       <SnapCarousel
