@@ -9,7 +9,7 @@ import {
   HeaderStyleInterpolators,
   StackNavigationProp,
 } from '@react-navigation/stack';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StatusBar, StyleSheet } from 'react-native';
 
 import Details from '@pages/details';
 import BottomTab from '@navigator/bottomTabs';
@@ -36,7 +36,9 @@ const Navigator: React.FC = () => {
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           gestureEnabled: true,
           gestureDirection: 'horizontal',
+          headerStatusBarHeight: StatusBar.currentHeight,
           headerStyle: {
+            backgroundColor: '#f88c16',
             ...Platform.select({
               android: {
                 elevation: 0,

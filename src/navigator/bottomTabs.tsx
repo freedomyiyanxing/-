@@ -9,13 +9,14 @@ import {
   getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
 
-import Home from '@pages/home';
 import Listen from '@pages/listen';
 import Found from '@pages/found';
 import Account from '@pages/account';
+import IconFont from '@assets/iconfont';
+import HomeTabs from '@navigator/home-tabs';
 
 type RootTabParamList = {
-  home: undefined;
+  homeTabs: undefined;
   listen: undefined;
   found: undefined;
   account: undefined;
@@ -31,9 +32,9 @@ interface IProps {
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
 const getHeaderTitle = (route: Route): string => {
-  const routeName = getFocusedRouteNameFromRoute(route) ?? 'home';
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'homeTabs';
   switch (routeName) {
-    case 'home':
+    case 'homeTabs':
       return '首页';
     case 'listen':
       return '我听';
@@ -57,13 +58,20 @@ const BottomTab: React.FC<IProps> = ({ navigation, route }) => {
     <>
       <Tab.Navigator
         tabBarOptions={{
-          activeTintColor: '#f83819',
+          activeTintColor: '#f86c1a',
+          inactiveTintColor: '#999999',
+          labelStyle: {
+            fontSize: 12,
+          },
         }}>
         <Tab.Screen
-          name="home"
-          component={Home}
+          name="homeTabs"
+          component={HomeTabs}
           options={{
             tabBarLabel: '首页',
+            tabBarIcon: ({ color, size }): React.ReactNode => (
+              <IconFont name="icon-index" color={color} size={size} />
+            ),
           }}
         />
         <Tab.Screen
@@ -71,6 +79,9 @@ const BottomTab: React.FC<IProps> = ({ navigation, route }) => {
           component={Listen}
           options={{
             tabBarLabel: '我听',
+            tabBarIcon: ({ color, size }): React.ReactNode => (
+              <IconFont name="icon-wo-ting" color={color} size={size} />
+            ),
           }}
         />
         <Tab.Screen
@@ -78,6 +89,9 @@ const BottomTab: React.FC<IProps> = ({ navigation, route }) => {
           component={Found}
           options={{
             tabBarLabel: '发现',
+            tabBarIcon: ({ color, size }): React.ReactNode => (
+              <IconFont name="icon-fa-xian" color={color} size={size} />
+            ),
           }}
         />
         <Tab.Screen
@@ -85,6 +99,9 @@ const BottomTab: React.FC<IProps> = ({ navigation, route }) => {
           component={Account}
           options={{
             tabBarLabel: '我的',
+            tabBarIcon: ({ color, size }): React.ReactNode => (
+              <IconFont name="icon-wo-de" color={color} size={size} />
+            ),
           }}
         />
       </Tab.Navigator>

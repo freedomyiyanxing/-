@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { RootStackNavigation } from '@navigator/index';
+import SnapCarousel from '@components/carousel/index';
 
 interface IProps {
   navigation: RootStackNavigation;
@@ -14,7 +15,8 @@ const Home: React.FC<IProps> = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <View style={style.container}>
+      <SnapCarousel />
       <View>
         <Text>Home</Text>
       </View>
@@ -26,5 +28,11 @@ const Home: React.FC<IProps> = ({ navigation }) => {
     </View>
   );
 };
+
+const style = StyleSheet.create({
+  container: {
+    marginTop: 10,
+  },
+});
 
 export default Home;
