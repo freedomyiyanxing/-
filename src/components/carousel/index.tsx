@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import SnapCarousel, {
-  ParallaxImage,
-  Pagination,
-  AdditionalParallaxProps,
-} from 'react-native-snap-carousel';
+import SnapCarousel, { ParallaxImage, Pagination, AdditionalParallaxProps } from 'react-native-snap-carousel';
 import { viewportWidth, wp, hp } from '@utils/index';
 import { CarouselDataTypes } from '@pages/home/request';
 
