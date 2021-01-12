@@ -6,29 +6,26 @@ import SnapCarousel, {
   AdditionalParallaxProps,
 } from 'react-native-snap-carousel';
 import { viewportWidth, wp, hp } from '@utils/index';
+import { CarouselDataTypes } from '@pages/home/request';
 
 interface IProps {
-  item: string;
+  item: CarouselDataTypes;
+  parallaxProps?: AdditionalParallaxProps;
 }
 
-const data = [
-  'https://www.twcode01.com/images/demo/demo2.jpg',
-  'https://pic1.zhimg.com/v2-4bba972a094eb1bdc8cbbc55e2bd4ddf_1440w.jpg?source=172ae18b',
-  'https://pic2.zhimg.com/v2-3be05963f5f3753a8cb75b6692154d4a_1440w.jpg?source=172ae18b',
-];
+interface IPropsTypes {
+  data: Array<CarouselDataTypes>;
+}
 
 const sliderWidth = viewportWidth;
 const slidWidth = wp(90);
 const slidHeight = hp(26);
 const itemWidth = slidWidth + wp(2) * 2;
 
-const RenderItem: React.FC<IProps> = (
-  { item },
-  parallaxProps?: AdditionalParallaxProps,
-) => {
+const RenderItem: React.FC<IProps> = ({ item }, parallaxProps) => {
   return (
     <ParallaxImage
-      source={{ uri: item }}
+      source={{ uri: item.image }}
       style={style.images}
       parallaxFactor={0.8}
       containerStyle={style.containerStyle}
@@ -39,7 +36,7 @@ const RenderItem: React.FC<IProps> = (
   );
 };
 
-const Carousel: React.FC = () => {
+const Carousel: React.FC<IPropsTypes> = ({ data }) => {
   const [index, setIndex] = useState(0);
 
   const onSnapToItem = (idx: number): void => {
@@ -55,7 +52,6 @@ const Carousel: React.FC = () => {
         sliderWidth={sliderWidth}
         itemWidth={itemWidth}
         hasParallaxImages
-        loop
         onSnapToItem={onSnapToItem}
       />
       <View style={style.paginationWrapper}>
