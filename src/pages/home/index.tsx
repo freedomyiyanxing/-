@@ -1,47 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { StyleSheet, FlatList } from 'react-native';
 import { RootStackNavigation } from '@navigator/index';
-import SnapCarousel from '@components/carousel/index';
 import Guess from '@pages/home/guess';
-import { getCarousel, getGuess, CarouselDataTypes, GuessDataTypes } from '@pages/home/request';
+import TopCarousel from '@pages/home/top-carousel';
+import RenderItem from '@pages/home/list';
+import { getListData, ListTypes } from '@pages/home/request';
 
 interface IProps {
   navigation: RootStackNavigation;
 }
 
-const Home: React.FC<IProps> = ({ navigation }) => {
-  const [carouselData, setCarouselData] = useState<Array<CarouselDataTypes> | []>([]);
+const Home: React.FC<IProps> = () => {
+  const [list, setList] = useState<ListTypes | null>(null);
 
-  const [guessData, setGuessData] = useState<Array<GuessDataTypes> | []>([]);
-
-  useEffect(() => {
-    getCarousel().then((res) => {
-      setCarouselData(res.data);
-    });
-    getGuess().then((res) => {
-      setGuessData(res.data);
-    });
-  }, []);
-
-  const onPress = (): void => {
-    navigation.navigate('Details', {
-      id: 100,
+  const getData = (): void => {
+    getListData().then((res) => {
+      setList(res.data);
     });
   };
 
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
-    <View style={style.container}>
-      {carouselData.length ? <SnapCarousel data={carouselData} /> : null}
-      {guessData.length ? <Guess data={guessData} /> : null}
-      <View>
-        <Text>Home1</Text>
-      </View>
-      <TouchableOpacity onPress={onPress}>
-        <View>
-          <Text>点击跳转到详情页面</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+    <FlatList
+      ListHeaderComponent={
+        <>
+          <TopCarousel />
+          <Guess />
+        </>
+      }
+      style={style.container}
+      data={list?.result}
+      renderItem={RenderItem}
+      keyExtractor={(item) => item.id}
+    />
   );
 };
 

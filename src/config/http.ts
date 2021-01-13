@@ -10,9 +10,7 @@ export interface RequestReturnTypes<T> {
 }
 
 export interface GetTypes {
-  <T>(url: string, params?: object, config?: AxiosRequestConfig): Promise<
-    RequestReturnTypes<T>
-  >;
+  <T>(url: string, params?: object, config?: AxiosRequestConfig): Promise<RequestReturnTypes<T>>;
 }
 
 const instance: AxiosInstance = axios.create({
@@ -34,7 +32,7 @@ instance.interceptors.response.use(
     if (data.code === 200) {
       return data;
     }
-    console.log('错误信息 ->', data.msg);
+    console.log('请求响应错误 ->', data.msg);
     return Promise.reject(data.msg);
   },
   (error: any) => {
