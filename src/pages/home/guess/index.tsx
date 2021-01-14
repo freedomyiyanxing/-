@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, Image, StyleSheet, Alert } from 'react-native';
-import { getGuess, GuessDataTypes } from '@pages/home/request';
+import { GuessDataTypes, useDataApi } from '@pages/home/request';
 import IconFont from '@assets/iconfont';
 import TouchClick from '@components/touchable/Touchable-click';
 
@@ -21,22 +21,18 @@ const RenderItem: React.FC<IProps> = ({ data }) => (
   </>
 );
 
-const Guess: React.FC = () => {
-  const [data, setData] = useState<Array<GuessDataTypes> | []>([]);
+const Guess: React.FC = React.memo(() => {
+  const { data, isLoading } = useDataApi<Array<GuessDataTypes>>('/home/guess');
 
-  const getData = (): void => {
-    getGuess().then((res) => {
-      setData(res.data);
-    });
-  };
+  if (isLoading) {
+    return null;
+  }
 
-  useEffect(() => {
-    getData();
-  }, []);
+  if (!data) {
+    return null;
+  }
 
-  const handleChangeBatch = (): void => {
-    getData();
-  };
+  const handleChangeBatch = (): void => {};
 
   return (
     <View style={style.container}>
@@ -57,7 +53,7 @@ const Guess: React.FC = () => {
       </TouchClick>
     </View>
   );
-};
+});
 
 const style = StyleSheet.create({
   container: {

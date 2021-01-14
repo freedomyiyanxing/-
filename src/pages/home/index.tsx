@@ -1,27 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, FlatList } from 'react-native';
 import { RootStackNavigation } from '@navigator/index';
 import Guess from '@pages/home/guess';
 import TopCarousel from '@pages/home/top-carousel';
 import RenderItem from '@pages/home/list';
-import { getListData, ListTypes } from '@pages/home/request';
+import { ListTypes, useDataApi } from '@pages/home/request';
 
 interface IProps {
   navigation: RootStackNavigation;
 }
 
 const Home: React.FC<IProps> = () => {
-  const [list, setList] = useState<ListTypes | null>(null);
+  const { data, isLoading } = useDataApi<ListTypes>('/home/list');
 
-  const getData = (): void => {
-    getListData().then((res) => {
-      setList(res.data);
-    });
+  if (isLoading) {
+    return null;
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  const handleEndReached = (): void => {
+    console.log('加载更多11');
   };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   return (
     <FlatList
@@ -32,9 +34,11 @@ const Home: React.FC<IProps> = () => {
         </>
       }
       style={style.container}
-      data={list?.result}
+      data={data.result}
       renderItem={RenderItem}
       keyExtractor={(item) => item.id}
+      onEndReachedThreshold={0.2}
+      onEndReached={handleEndReached}
     />
   );
 };

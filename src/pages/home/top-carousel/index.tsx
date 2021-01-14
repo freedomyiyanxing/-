@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import SnapCarousel from '@components/carousel';
-import { CarouselDataTypes, getCarousel } from '@pages/home/request';
+import { CarouselDataTypes, useDataApi } from '@pages/home/request';
 
-const TopCarousel: React.FC = () => {
-  const [data, setData] = useState<Array<CarouselDataTypes> | []>([]);
+const TopCarousel: React.FC = React.memo(() => {
+  const { data, isLoading } = useDataApi<Array<CarouselDataTypes>>('/home/carousel');
 
-  useEffect(() => {
-    getCarousel().then((res) => {
-      setData(res.data);
-    });
-  }, []);
-
-  if (!data.length) {
+  if (isLoading) {
     return null;
   }
+
+  if (!data) {
+    return null;
+  }
+
   return <SnapCarousel data={data} />;
-};
+});
 export default TopCarousel;
