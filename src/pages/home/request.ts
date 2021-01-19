@@ -24,6 +24,8 @@ export interface ListItemTypes {
 
 export interface ListTypes {
   result: Array<ListItemTypes>;
+  size: number;
+  total: number;
 }
 
 interface ReducerState {

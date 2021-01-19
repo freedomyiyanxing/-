@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, FlatList } from 'react-native';
+import { StyleSheet, FlatList, Text } from 'react-native';
 import { RootStackNavigation } from '@navigator/index';
 import Guess from '@pages/home/guess';
 import TopCarousel from '@pages/home/top-carousel';
 import RenderItem from '@pages/home/list';
+import Loading from '@components/loading';
+import NoMore from '@components/no-more';
 import { getHomeList, ListItemTypes } from '@pages/home/request';
 
 interface IProps {
@@ -12,6 +14,7 @@ interface IProps {
 
 interface IState {
   data: Array<ListItemTypes> | null;
+  isMore: boolean;
 }
 
 class Home extends React.Component<IProps, IState> {
@@ -20,6 +23,7 @@ class Home extends React.Component<IProps, IState> {
 
     this.state = {
       data: null,
+      isMore: true,
     };
   }
 
@@ -31,15 +35,27 @@ class Home extends React.Component<IProps, IState> {
   }
 
   handleEndReached = async () => {
-    const { data } = this.state;
+    const { data, isMore } = this.state;
+    if (!isMore) {
+      return;
+    }
     const result = await getHomeList();
-    this.setState({
-      data: data?.concat(result.data.result) as Array<ListItemTypes>,
-    });
+    this.setState(
+      {
+        data: data?.concat(result.data.result) as Array<ListItemTypes>,
+      },
+      () => {
+        if ((this.state.data as Array<ListItemTypes>).length >= result.data.total) {
+          this.setState({
+            isMore: false,
+          });
+        }
+      },
+    );
   };
 
   render() {
-    const { data } = this.state;
+    const { data, isMore } = this.state;
     return (
       <FlatList
         ListHeaderComponent={
@@ -54,6 +70,7 @@ class Home extends React.Component<IProps, IState> {
         keyExtractor={(item) => item.id}
         onEndReachedThreshold={0.2}
         onEndReached={this.handleEndReached}
+        ListFooterComponent={isMore ? <Loading /> : <NoMore />}
       />
     );
   }

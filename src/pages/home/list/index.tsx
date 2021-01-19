@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { View, Text, Image, StyleSheet, Alert } from 'react-native';
 import { ListItemTypes } from '@pages/home/request';
 import IconFont from '@assets/iconfont';
@@ -21,11 +21,11 @@ const Item: React.FC<IItemProps> = ({ item, onPress }) => (
       </Text>
       <View style={style.playWrapper}>
         <View style={style.play}>
-          <IconFont name="icon-cainixihuan" size={14} />
+          <IconFont name="icon-zai-ting" size={14} color="#999" />
           <Text style={style.playText}>{item.played}</Text>
         </View>
         <View style={style.play}>
-          <IconFont name="icon-cainixihuan" size={14} />
+          <IconFont name="icon-ding-yue" size={14} color="#999" />
           <Text style={style.playText}>{item.playing}</Text>
         </View>
       </View>
@@ -80,6 +80,7 @@ const style = StyleSheet.create({
   },
   play: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
     marginRight: 10,
   },
   playText: {
