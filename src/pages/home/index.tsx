@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, FlatList, Text } from 'react-native';
+import { StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { RootStackNavigation } from '@navigator/index';
 import Guess from '@pages/home/guess';
 import TopCarousel from '@pages/home/top-carousel';
@@ -15,6 +15,7 @@ interface IProps {
 interface IState {
   data: Array<ListItemTypes> | null;
   isMore: boolean;
+  loading: boolean;
 }
 
 class Home extends React.Component<IProps, IState> {
@@ -24,6 +25,7 @@ class Home extends React.Component<IProps, IState> {
     this.state = {
       data: null,
       isMore: true,
+      loading: false,
     };
   }
 
@@ -33,6 +35,17 @@ class Home extends React.Component<IProps, IState> {
       data: result.data.result,
     });
   }
+
+  loadData = async () => {
+    this.setState({
+      loading: true,
+    });
+    const result = await getHomeList();
+    this.setState({
+      data: result.data.result,
+      loading: false,
+    });
+  };
 
   handleEndReached = async () => {
     const { data, isMore } = this.state;
@@ -55,7 +68,7 @@ class Home extends React.Component<IProps, IState> {
   };
 
   render() {
-    const { data, isMore } = this.state;
+    const { data, isMore, loading } = this.state;
     return (
       <FlatList
         ListHeaderComponent={
@@ -71,6 +84,16 @@ class Home extends React.Component<IProps, IState> {
         onEndReachedThreshold={0.2}
         onEndReached={this.handleEndReached}
         ListFooterComponent={isMore ? <Loading /> : <NoMore />}
+        refreshControl={
+          <RefreshControl
+            colors={['#f86c1a']}
+            titleColor={'#f86c1a'}
+            refreshing={loading}
+            onRefresh={() => {
+              this.loadData().then(); //下拉刷新加载数据
+            }}
+          />
+        }
       />
     );
   }
