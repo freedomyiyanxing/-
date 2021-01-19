@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useState, useEffect, useReducer } from 'react';
 import { get } from '@config/http';
 
@@ -38,6 +38,18 @@ interface ReducerAction {
   [key: string]: any;
 }
 
+export const getHomeGuessList = async () => {
+  return await get<Array<GuessDataTypes>>('/home/guess');
+};
+
+export const getHomeTopCarousel = async () => {
+  return await get<Array<CarouselDataTypes>>('/home/carousel');
+};
+
+export const getHomeList = async () => {
+  return await get<ListTypes>('/home/list');
+};
+
 const dataFetchReducer: React.Reducer<ReducerState, ReducerAction> = (state, action) => {
   switch (action.type) {
     case 'FETCH_INIT':
@@ -64,14 +76,15 @@ const dataFetchReducer: React.Reducer<ReducerState, ReducerAction> = (state, act
   }
 };
 
-export const useDataApi = <T>(
-  initialUrl: string,
-): {
+interface TReturnProps<T> {
   isLoading: boolean;
   isError: boolean;
   data: T;
-} => {
-  const [url] = useState(initialUrl);
+  setUrl: Dispatch<SetStateAction<string>>;
+}
+
+export const useDataApi = <T>(initialUrl: string): TReturnProps<T> => {
+  const [url, setUrl] = useState(initialUrl);
 
   const [state, dispatch] = useReducer(dataFetchReducer, {
     isError: false,
@@ -81,7 +94,7 @@ export const useDataApi = <T>(
 
   useEffect(() => {
     let didCancel = false;
-
+    console.log('url', url);
     const fetchData = async () => {
       dispatch({ type: 'FETCH_INIT' });
       try {
@@ -103,5 +116,5 @@ export const useDataApi = <T>(
     };
   }, [url]);
 
-  return state;
+  return { ...state, setUrl };
 };

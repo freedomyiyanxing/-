@@ -1,11 +1,15 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Alert } from 'react-native';
-import { GuessDataTypes, useDataApi } from '@pages/home/request';
 import IconFont from '@assets/iconfont';
+import { getHomeGuessList, GuessDataTypes } from '@pages/home/request';
 import TouchClick from '@components/touchable/Touchable-click';
 
 interface IProps {
   data: Array<GuessDataTypes>;
+}
+
+interface IState {
+  data: Array<GuessDataTypes> | null;
 }
 
 const RenderItem: React.FC<IProps> = ({ data }) => (
@@ -21,39 +25,53 @@ const RenderItem: React.FC<IProps> = ({ data }) => (
   </>
 );
 
-const Guess: React.FC = React.memo(() => {
-  const { data, isLoading } = useDataApi<Array<GuessDataTypes>>('/home/guess');
+class Guess extends React.PureComponent<object, IState> {
+  constructor(props: IProps) {
+    super(props);
 
-  if (isLoading) {
-    return null;
+    this.state = {
+      data: null,
+    };
   }
 
-  if (!data) {
-    return null;
+  async componentDidMount(): Promise<void> {
+    const result = await getHomeGuessList();
+    this.setState({
+      data: result.data,
+    });
   }
 
-  const handleChangeBatch = (): void => {};
+  handleChangeBatch = async (): Promise<void> => {
+    const result = await getHomeGuessList();
+    this.setState({
+      data: result.data,
+    });
+  };
 
-  return (
-    <View style={style.container}>
-      <View style={style.headerContainer}>
-        <View style={style.left}>
-          <IconFont name="icon-cainixihuan" color="#999999" size={14} />
-          <Text style={style.text}>猜你喜欢</Text>
+  render(): React.ReactElement | null {
+    const { data } = this.state;
+
+    return (
+      <View style={style.container}>
+        <View style={style.headerContainer}>
+          <View style={style.left}>
+            <IconFont name="icon-cainixihuan" color="#999999" size={14} />
+            <Text style={style.text}>猜你喜欢</Text>
+          </View>
+          <View style={style.right}>
+            <Text style={style.text}>更多</Text>
+            <IconFont name="icon-more" color="#999999" size={14} />
+          </View>
         </View>
-        <View style={style.right}>
-          <Text style={style.text}>更多</Text>
-          <IconFont name="icon-more" color="#999999" size={14} />
-        </View>
+        <View style={style.list}>{data?.length ? <RenderItem data={data} /> : null}</View>
+        <TouchClick style={style.footerContainer} onPress={this.handleChangeBatch}>
+          <IconFont name="icon-huanyipi" color="#f86c1a" size={14} />
+          <Text style={style.text}>换一批</Text>
+        </TouchClick>
       </View>
-      <View style={style.list}>{data.length ? <RenderItem data={data} /> : null}</View>
-      <TouchClick style={style.footerContainer} onPress={handleChangeBatch}>
-        <IconFont name="icon-huanyipi" color="#f86c1a" size={14} />
-        <Text style={style.text}>换一批</Text>
-      </TouchClick>
-    </View>
-  );
-});
+    );
+  }
+}
 
 const style = StyleSheet.create({
   container: {

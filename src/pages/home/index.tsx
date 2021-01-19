@@ -4,44 +4,60 @@ import { RootStackNavigation } from '@navigator/index';
 import Guess from '@pages/home/guess';
 import TopCarousel from '@pages/home/top-carousel';
 import RenderItem from '@pages/home/list';
-import { ListTypes, useDataApi } from '@pages/home/request';
+import { getHomeList, ListItemTypes } from '@pages/home/request';
 
 interface IProps {
   navigation: RootStackNavigation;
 }
 
-const Home: React.FC<IProps> = () => {
-  const { data, isLoading } = useDataApi<ListTypes>('/home/list');
+interface IState {
+  data: Array<ListItemTypes> | null;
+}
 
-  if (isLoading) {
-    return null;
+class Home extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+
+    this.state = {
+      data: null,
+    };
   }
 
-  if (!data) {
-    return null;
+  async componentDidMount(): Promise<void> {
+    const result = await getHomeList();
+    this.setState({
+      data: result.data.result,
+    });
   }
 
-  const handleEndReached = (): void => {
-    console.log('加载更多11');
+  handleEndReached = async () => {
+    const { data } = this.state;
+    const result = await getHomeList();
+    this.setState({
+      data: data?.concat(result.data.result) as Array<ListItemTypes>,
+    });
   };
 
-  return (
-    <FlatList
-      ListHeaderComponent={
-        <>
-          <TopCarousel />
-          <Guess />
-        </>
-      }
-      style={style.container}
-      data={data.result}
-      renderItem={RenderItem}
-      keyExtractor={(item) => item.id}
-      onEndReachedThreshold={0.2}
-      onEndReached={handleEndReached}
-    />
-  );
-};
+  render() {
+    const { data } = this.state;
+    return (
+      <FlatList
+        ListHeaderComponent={
+          <>
+            <TopCarousel />
+            <Guess />
+          </>
+        }
+        style={style.container}
+        data={data}
+        renderItem={RenderItem}
+        keyExtractor={(item) => item.id}
+        onEndReachedThreshold={0.2}
+        onEndReached={this.handleEndReached}
+      />
+    );
+  }
+}
 
 const style = StyleSheet.create({
   container: {
