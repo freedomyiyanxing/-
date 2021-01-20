@@ -1,12 +1,14 @@
 import React from 'react';
 import Navigator from '@navigator/index'; // 堆栈式导航栏
 import { StatusBar } from 'react-native';
+import { Provider } from 'react-redux';
+import Store from '@store/index';
 
 const App = () => (
-  <>
+  <Provider store={Store}>
     <Navigator />
     <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
-  </>
+  </Provider>
 );
 
 export default App;

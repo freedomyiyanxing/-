@@ -53,11 +53,7 @@ const Navigator: React.FC = () => {
           },
         }}>
         <Stack.Screen name="BottomTabs" component={BottomTab} />
-        <Stack.Screen
-          name="Details"
-          component={Details}
-          options={{ headerTitle: '详情页面' }}
-        />
+        <Stack.Screen name="Details" component={Details} options={{ headerTitle: '详情页面' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

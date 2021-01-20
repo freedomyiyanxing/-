@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, FlatList, RefreshControl } from 'react-native';
+import {
+  StyleSheet,
+  FlatList,
+  RefreshControl,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+} from 'react-native';
 import { RootStackNavigation } from '@navigator/index';
 import Guess from '@pages/home/guess';
 import TopCarousel from '@pages/home/top-carousel';
@@ -7,6 +13,7 @@ import RenderItem from '@pages/home/list';
 import Loading from '@components/loading';
 import NoMore from '@components/no-more';
 import { getHomeList, ListItemTypes } from '@pages/home/request';
+import { slidHeight } from '@components/carousel/render-item';
 
 interface IProps {
   navigation: RootStackNavigation;
@@ -39,6 +46,7 @@ class Home extends React.Component<IProps, IState> {
   loadData = async () => {
     this.setState({
       loading: true,
+      isMore: true,
     });
     const result = await getHomeList();
     this.setState({
@@ -67,6 +75,11 @@ class Home extends React.Component<IProps, IState> {
     );
   };
 
+  handleOnScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { y } = nativeEvent.contentOffset;
+    console.log(y > slidHeight);
+  };
+
   render() {
     const { data, isMore, loading } = this.state;
     return (
@@ -84,6 +97,7 @@ class Home extends React.Component<IProps, IState> {
         onEndReachedThreshold={0.2}
         onEndReached={this.handleEndReached}
         ListFooterComponent={isMore ? <Loading /> : <NoMore />}
+        onScroll={this.handleOnScroll}
         refreshControl={
           <RefreshControl
             colors={['#f86c1a']}
@@ -100,9 +114,7 @@ class Home extends React.Component<IProps, IState> {
 }
 
 const style = StyleSheet.create({
-  container: {
-    marginTop: 10,
-  },
+  container: {},
 });
 
 export default Home;

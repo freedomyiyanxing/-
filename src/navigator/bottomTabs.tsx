@@ -4,10 +4,7 @@
 import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RootStackNavigation, RootStackParamList } from '@navigator/index';
-import {
-  RouteProp,
-  getFocusedRouteNameFromRoute,
-} from '@react-navigation/native';
+import { RouteProp, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import Listen from '@pages/listen';
 import Found from '@pages/found';
@@ -31,28 +28,50 @@ interface IProps {
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
-const getHeaderTitle = (route: Route): string => {
+type HeaderObj = {
+  headerTitle: string;
+  headerTransparent: boolean;
+};
+
+const getHeaderObjs = (route: Route): HeaderObj => {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'homeTabs';
   switch (routeName) {
     case 'homeTabs':
-      return '首页';
+      return {
+        headerTitle: '',
+        headerTransparent: true,
+      };
     case 'listen':
-      return '我听';
+      return {
+        headerTitle: '我听',
+        headerTransparent: false,
+      };
     case 'found':
-      return '发现';
+      return {
+        headerTitle: '发现',
+        headerTransparent: false,
+      };
     case 'account':
-      return '账户';
+      return {
+        headerTitle: '账户',
+        headerTransparent: false,
+      };
     default:
-      return '首页';
+      return {
+        headerTitle: '',
+        headerTransparent: false,
+      };
   }
 };
 
 const BottomTab: React.FC<IProps> = ({ navigation, route }) => {
   useEffect(() => {
+    const { headerTransparent, headerTitle } = getHeaderObjs(route);
     navigation.setOptions({
-      headerTitle: getHeaderTitle(route),
+      headerTransparent, // 隐藏标题栏背景色
+      headerTitle, // 设置标题文字
     });
-  });
+  }, [navigation, route]);
 
   return (
     <>
