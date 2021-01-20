@@ -1,6 +1,19 @@
-import { HOME_CAROUSE_ACTIVE, HOME_CAROUSE_INDEX } from './types';
+import {
+  CarouseObjs,
+  HOME_CAROUSE_ACTIVE,
+  HOME_CAROUSE_INDEX,
+  HOME_IS_LINEAR_GRADIENT_ACTIVE,
+  HOME_IS_LINEAR_GRADIENT,
+} from './types';
 
-export const homeCarouseActive = (carouseIndex: number): HOME_CAROUSE_ACTIVE => ({
+export const homeCarouseActive = (carouseObjs: CarouseObjs): HOME_CAROUSE_ACTIVE => ({
   type: HOME_CAROUSE_INDEX,
-  payload: carouseIndex,
+  payload: carouseObjs,
+});
+
+export const homeIsLinearGradientActive = (
+  isLinearGradient: boolean,
+): HOME_IS_LINEAR_GRADIENT_ACTIVE => ({
+  type: HOME_IS_LINEAR_GRADIENT,
+  payload: isLinearGradient,
 });

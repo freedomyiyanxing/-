@@ -17,9 +17,16 @@ interface IPropsTypes {
 const Carousel: React.FC<IPropsTypes> = ({ data, homeInfo, handleCarouseActive }) => {
   const onSnapToItem = (idx: number): void => {
     if (handleCarouseActive) {
-      handleCarouseActive(idx);
+      handleCarouseActive({ carouseIndex: idx, colors: data[idx].colors });
     }
   };
+
+  React.useEffect(() => {
+    if (handleCarouseActive) {
+      handleCarouseActive({ carouseIndex: 0, colors: data[0].colors });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   return (
     <View>
@@ -35,7 +42,7 @@ const Carousel: React.FC<IPropsTypes> = ({ data, homeInfo, handleCarouseActive }
       <View style={style.paginationWrapper}>
         <Pagination
           dotsLength={data.length}
-          activeDotIndex={(homeInfo as HOME_INFO).carouseIndex}
+          activeDotIndex={(homeInfo as HOME_INFO).carouseObjs.carouseIndex}
           inactiveDotOpacity={0.5}
           inactiveDotScale={0.8}
           dotStyle={style.dotStyle}

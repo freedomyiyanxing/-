@@ -5,6 +5,7 @@ import { get } from '@config/http';
 export interface CarouselDataTypes {
   id: string;
   image: string;
+  colors: Array<string>;
 }
 
 export interface GuessDataTypes {

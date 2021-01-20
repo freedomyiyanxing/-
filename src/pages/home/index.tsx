@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  FlatList,
-  RefreshControl,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-} from 'react-native';
+import { connect } from 'react-redux';
+import { FlatList, RefreshControl, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { RootStackNavigation } from '@navigator/index';
 import Guess from '@pages/home/guess';
 import TopCarousel from '@pages/home/top-carousel';
@@ -14,9 +9,14 @@ import Loading from '@components/loading';
 import NoMore from '@components/no-more';
 import { getHomeList, ListItemTypes } from '@pages/home/request';
 import { slidHeight } from '@components/carousel/render-item';
+import { AppStore } from '@store/index';
+import { HOME_INFO } from '@store/home-store/types';
+import { homeIsLinearGradientActive } from '@store/home-store/action';
 
 interface IProps {
   navigation: RootStackNavigation;
+  homeInfo?: HOME_INFO;
+  handleIsLinearGradientActive?: typeof homeIsLinearGradientActive;
 }
 
 interface IState {
@@ -76,8 +76,12 @@ class Home extends React.Component<IProps, IState> {
   };
 
   handleOnScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { handleIsLinearGradientActive, homeInfo } = this.props;
     const { y } = nativeEvent.contentOffset;
-    console.log(y > slidHeight);
+    const curIsHidden = y < slidHeight;
+    if (handleIsLinearGradientActive && curIsHidden !== homeInfo?.isLinearGradient) {
+      handleIsLinearGradientActive(curIsHidden);
+    }
   };
 
   render() {
@@ -90,7 +94,6 @@ class Home extends React.Component<IProps, IState> {
             <Guess />
           </>
         }
-        style={style.container}
         data={data}
         renderItem={RenderItem}
         keyExtractor={(item) => item.id}
@@ -113,8 +116,10 @@ class Home extends React.Component<IProps, IState> {
   }
 }
 
-const style = StyleSheet.create({
-  container: {},
+const mapStateProps = (state: AppStore): HOME_INFO | object => ({
+  homeInfo: state.homeInfo,
 });
 
-export default Home;
+export default connect(mapStateProps, {
+  handleIsLinearGradientActive: homeIsLinearGradientActive,
+})(Home);
