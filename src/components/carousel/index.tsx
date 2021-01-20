@@ -6,20 +6,20 @@ import { CarouselDataTypes } from '@pages/home/request';
 import RenderItem, { itemWidth, sliderWidth } from './render-item';
 import { AppStore } from '@store/index';
 import { HOME_INFO } from '@store/home-store/types';
-import { homeSetInfo } from '@store/home-store/action';
+import { homeCarouseActive } from '@store/home-store/action';
 
 interface IPropsTypes {
   data: Array<CarouselDataTypes>;
-  homeInfo: HOME_INFO;
-  handleHomeActive: typeof homeSetInfo;
+  homeInfo?: HOME_INFO;
+  handleCarouseActive?: typeof homeCarouseActive;
 }
 
-const Carousel: React.FC<IPropsTypes> = ({ data, homeInfo, handleHomeActive }) => {
+const Carousel: React.FC<IPropsTypes> = ({ data, homeInfo, handleCarouseActive }) => {
   const onSnapToItem = (idx: number): void => {
-    handleHomeActive({ number: idx });
+    if (handleCarouseActive) {
+      handleCarouseActive(idx);
+    }
   };
-
-  console.log(homeInfo);
 
   return (
     <View>
@@ -35,7 +35,7 @@ const Carousel: React.FC<IPropsTypes> = ({ data, homeInfo, handleHomeActive }) =
       <View style={style.paginationWrapper}>
         <Pagination
           dotsLength={data.length}
-          activeDotIndex={homeInfo.number}
+          activeDotIndex={(homeInfo as HOME_INFO).carouseIndex}
           inactiveDotOpacity={0.5}
           inactiveDotScale={0.8}
           dotStyle={style.dotStyle}
@@ -77,5 +77,5 @@ const mapStateProps = (state: AppStore): HOME_INFO | object => ({
 });
 
 export default connect(mapStateProps, {
-  handleHomeActive: homeSetInfo,
+  handleCarouseActive: homeCarouseActive,
 })(Carousel);

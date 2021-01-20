@@ -1,6 +1,6 @@
-import { HOME_ACTIVE, HOME_INFO, HOME_SET } from './types';
+import { HOME_CAROUSE_ACTIVE, HOME_CAROUSE_INDEX } from './types';
 
-export const homeSetInfo = (info: HOME_INFO): HOME_ACTIVE => ({
-  type: HOME_SET,
-  payload: info,
+export const homeCarouseActive = (carouseIndex: number): HOME_CAROUSE_ACTIVE => ({
+  type: HOME_CAROUSE_INDEX,
+  payload: carouseIndex,
 });

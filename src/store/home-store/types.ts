@@ -1,10 +1,11 @@
-export const HOME_SET = 'HOME_SET'; // 首页轮播图下标
+export const HOME_CAROUSE_INDEX = 'HOME_CAROUSE_INDEX'; // 首页
 
 export type HOME_INFO = {
-  number: number;
+  carouseIndex: number; // 轮播图滑动下标
+  isLinearGradient: boolean; // 是否显示渐变导航栏
 };
 
-export type HOME_ACTIVE = {
-  type: typeof HOME_SET;
-  payload: HOME_INFO;
+export type HOME_CAROUSE_ACTIVE = {
+  type: typeof HOME_CAROUSE_INDEX;
+  payload: number;
 };
