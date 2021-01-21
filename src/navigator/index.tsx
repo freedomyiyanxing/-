@@ -12,13 +12,17 @@ import {
 import { Platform, StatusBar, StyleSheet } from 'react-native';
 
 import Details from '@pages/details';
-import BottomTab from '@navigator/bottomTabs';
+import IndexBottomTab from './index-bottom-tabs';
+import TestBottomTab from './test-bottom-tabs';
+import Category from '@pages/category';
 
 export type RootStackParamList = {
-  BottomTabs: undefined;
+  IndexBottomTab: undefined;
+  TestBottomTab: undefined;
   Details: {
     id: number;
   };
+  Category: undefined;
 };
 
 export type RootStackNavigation = StackNavigationProp<RootStackParamList>;
@@ -51,8 +55,12 @@ const Navigator: React.FC = () => {
           headerTitleStyle: {
             fontSize: 14,
           },
+          headerTitle: '',
+          // headerLeft: () => null, // 隐藏导航栏返回按钮
         }}>
-        <Stack.Screen name="BottomTabs" component={BottomTab} />
+        <Stack.Screen name="IndexBottomTab" component={IndexBottomTab} />
+        <Stack.Screen name="Category" component={Category} options={{ headerTitle: '分类页面' }} />
+        <Stack.Screen name="TestBottomTab" component={TestBottomTab} />
         <Stack.Screen name="Details" component={Details} options={{ headerTitle: '详情页面' }} />
       </Stack.Navigator>
     </NavigationContainer>

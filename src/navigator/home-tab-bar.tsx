@@ -12,27 +12,48 @@ import { HOME_INFO } from '@store/home-store/types';
 type IProps = MaterialTopTabBarProps & { homeInfo?: HOME_INFO };
 
 // 自定义首页 TabBar
-const HomeTabBar: React.FC<IProps> = ({ homeInfo, ...rest }) => (
-  <View style={tabBarStyle.container}>
-    {homeInfo?.isLinearGradient ? (
-      <LinearGradient colors={homeInfo?.carouseObjs.colors} style={tabBarStyle.gradient} />
-    ) : null}
-    <View style={tabBarStyle.wrapper}>
-      <MaterialTopTabBar {...rest} style={tabBarStyle.tabBar} />
-      <TouchClick style={tabBarStyle.categoryBtn}>
-        <Text style={tabBarStyle.categoryText}>分类</Text>
-      </TouchClick>
+const HomeTabBar: React.FC<IProps> = (props) => {
+  let { homeInfo, indicatorStyle, navigation, ...rest } = props;
+  let textStyle = tabBarStyle.blockText;
+  let activeTintColor = '#333';
+  if (homeInfo?.isLinearGradient) {
+    textStyle = tabBarStyle.whiteText;
+    activeTintColor = '#fff';
+    indicatorStyle = StyleSheet.compose(indicatorStyle, { backgroundColor: '#fff' });
+  }
+
+  const handleToCategory = React.useCallback(() => {
+    navigation.navigate('Category');
+  }, [navigation]);
+
+  return (
+    <View style={tabBarStyle.container}>
+      {homeInfo?.isLinearGradient ? (
+        <LinearGradient colors={homeInfo?.carouseObjs.colors} style={tabBarStyle.gradient} />
+      ) : null}
+      <View style={tabBarStyle.wrapper}>
+        <MaterialTopTabBar
+          {...rest}
+          navigation={navigation}
+          activeTintColor={activeTintColor}
+          indicatorStyle={indicatorStyle}
+          style={tabBarStyle.tabBar}
+        />
+        <TouchClick style={tabBarStyle.categoryBtn} onPress={handleToCategory}>
+          <Text style={{ ...tabBarStyle.text, ...textStyle }}>分类</Text>
+        </TouchClick>
+      </View>
+      <View style={tabBarStyle.botWrapper}>
+        <TouchClick style={tabBarStyle.searchBtn}>
+          <Text style={{ ...tabBarStyle.text, ...textStyle }}>搜素</Text>
+        </TouchClick>
+        <TouchClick style={tabBarStyle.historyBtn}>
+          <Text style={{ ...tabBarStyle.text, ...textStyle }}>历史记录</Text>
+        </TouchClick>
+      </View>
     </View>
-    <View style={tabBarStyle.botWrapper}>
-      <TouchClick style={tabBarStyle.searchBtn}>
-        <Text style={tabBarStyle.categoryText}>搜素</Text>
-      </TouchClick>
-      <TouchClick style={tabBarStyle.historyBtn}>
-        <Text style={tabBarStyle.categoryText}>历史记录</Text>
-      </TouchClick>
-    </View>
-  </View>
-);
+  );
+};
 
 const tabBarStyle = StyleSheet.create({
   container: {
@@ -54,13 +75,10 @@ const tabBarStyle = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   categoryBtn: {
-    marginTop: 6,
+    marginTop: 8,
     paddingHorizontal: 10,
     borderLeftWidth: StyleSheet.hairlineWidth,
     borderLeftColor: '#ccc',
-  },
-  categoryText: {
-    fontSize: 12,
   },
   botWrapper: {
     flexDirection: 'row',
@@ -78,6 +96,15 @@ const tabBarStyle = StyleSheet.create({
   },
   historyBtn: {
     marginLeft: 24,
+  },
+  text: {
+    fontSize: 12,
+  },
+  blockText: {
+    color: '#333',
+  },
+  whiteText: {
+    color: '#fff',
   },
 });
 

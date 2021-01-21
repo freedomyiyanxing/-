@@ -8,9 +8,7 @@ interface IProps {
 
 const Listen: React.FC<IProps> = ({ navigation }) => {
   const onPress = (): void => {
-    navigation.navigate('Details', {
-      id: 100,
-    });
+    navigation.navigate('TestBottomTab');
   };
 
   return (
@@ -19,9 +17,7 @@ const Listen: React.FC<IProps> = ({ navigation }) => {
         <Text>Listen</Text>
       </View>
       <TouchableOpacity onPress={onPress}>
-        <View>
-          <Text>点击跳转到详情页面</Text>
-        </View>
+        <Text>跳转到测试分类页面</Text>
       </TouchableOpacity>
     </View>
   );

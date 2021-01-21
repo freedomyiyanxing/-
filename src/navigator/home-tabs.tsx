@@ -7,6 +7,7 @@ import Home from '@pages/home';
 const Tab = createMaterialTopTabNavigator();
 
 const HomeTabs: React.FC = () => {
+  console.log('什么时候执行');
   return (
     <Tab.Navigator
       lazy

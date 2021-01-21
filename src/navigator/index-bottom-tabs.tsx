@@ -19,7 +19,7 @@ type RootTabParamList = {
   account: undefined;
 };
 
-type Route = RouteProp<RootStackParamList, 'BottomTabs'>;
+type Route = RouteProp<RootStackParamList, 'IndexBottomTab'>;
 
 interface IProps {
   navigation: RootStackNavigation;
@@ -64,7 +64,7 @@ const getHeaderObjs = (route: Route): HeaderObj => {
   }
 };
 
-const BottomTab: React.FC<IProps> = ({ navigation, route }) => {
+const IndexBottomTab: React.FC<IProps> = ({ navigation, route }) => {
   useEffect(() => {
     const { headerTransparent, headerTitle } = getHeaderObjs(route);
     navigation.setOptions({
@@ -128,4 +128,4 @@ const BottomTab: React.FC<IProps> = ({ navigation, route }) => {
   );
 };
 
-export default BottomTab;
+export default IndexBottomTab;
