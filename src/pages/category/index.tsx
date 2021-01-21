@@ -1,34 +1,89 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { RootStackNavigation } from '@navigator/index';
-import TouchClick from '@components/touchable/Touchable-click';
+import { get } from '@config/http';
+
+interface CategoryDataType {
+  id: string;
+  name: string;
+  classify?: string;
+}
 
 interface IProps {
   navigation: RootStackNavigation;
 }
 
-class Category extends React.PureComponent<IProps> {
+interface IState {
+  myCategoryList: Array<CategoryDataType> | null;
+  categoryList: Array<CategoryDataType> | null;
+}
+
+let isDestroy = false;
+
+const defaultCategoryList = [
+  {
+    id: '0',
+    name: '推荐',
+  },
+  {
+    id: '1',
+    name: 'Vip',
+  },
+];
+
+class Category extends React.PureComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    this.state = {
+      myCategoryList: defaultCategoryList,
+      categoryList: null,
+    };
   }
 
-  handleToHome = (): void => {
-    // const { navigation } = this.props;
-    // navigation.navigate('BottomTabs');
+  async componentDidMount(): Promise<void> {
+    isDestroy = false;
+    this.getData();
+  }
+
+  componentWillUnmount(): void {
+    isDestroy = true;
+  }
+
+  getData = async (): Promise<void> => {
+    const result = await get<Array<CategoryDataType>>('/category/list');
+    if (!isDestroy) {
+      this.setState({
+        categoryList: result.data,
+      });
+    }
   };
 
+  renderItem = (item: CategoryDataType) => (
+    <View key={item.id}>
+      <Text>{item.name}</Text>
+    </View>
+  );
+
   render(): React.ReactElement | null {
+    const { myCategoryList, categoryList } = this.state;
+    console.log(myCategoryList);
     return (
-      <View>
-        <Text>category</Text>
+      <ScrollView style={style.container}>
+        <Text>我的分类</Text>
+        <View>{myCategoryList?.map(this.renderItem)}</View>
         <View>
-          <TouchClick onPress={this.handleToHome}>
-            <Text>点击去其他页面</Text>
-          </TouchClick>
+          <Text>全部分类</Text>
+          <View>{categoryList?.map(this.renderItem)}</View>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
+
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default Category;
