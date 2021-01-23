@@ -41,6 +41,12 @@ const Navigator: React.FC = () => {
           gestureEnabled: true,
           gestureDirection: 'horizontal',
           headerStatusBarHeight: StatusBar.currentHeight,
+          headerBackTitleVisible: false,
+          headerTintColor: '#333333',
+          headerTitleStyle: {
+            fontSize: 14,
+          },
+          headerTitle: '',
           headerStyle: {
             height: 60,
             backgroundColor: '#f88c16',
@@ -51,12 +57,6 @@ const Navigator: React.FC = () => {
               },
             }),
           },
-          headerTintColor: '#333333',
-          headerTitleStyle: {
-            fontSize: 14,
-          },
-          headerTitle: '',
-          // headerLeft: () => null, // 隐藏导航栏返回按钮
         }}>
         <Stack.Screen name="IndexBottomTab" component={IndexBottomTab} />
         <Stack.Screen name="Category" component={Category} options={{ headerTitle: '分类页面' }} />
