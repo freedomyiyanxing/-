@@ -13,13 +13,14 @@ type IProps = MaterialTopTabBarProps & { homeInfo?: HOME_INFO };
 
 // 自定义首页 TabBar
 const HomeTabBar: React.FC<IProps> = (props) => {
-  let { homeInfo, indicatorStyle, navigation, ...rest } = props;
+  let { homeInfo, indicatorStyle, inactiveTintColor, navigation, ...rest } = props;
   let textStyle = tabBarStyle.blockText;
-  let activeTintColor = '#333';
+  let activeTintColor = '#f86c1a';
   if (homeInfo?.isLinearGradient) {
     textStyle = tabBarStyle.whiteText;
     activeTintColor = '#fff';
     indicatorStyle = StyleSheet.compose(indicatorStyle, { backgroundColor: '#fff' });
+    inactiveTintColor = '#fff';
   }
 
   const handleToCategory = React.useCallback(() => {
@@ -37,6 +38,7 @@ const HomeTabBar: React.FC<IProps> = (props) => {
           navigation={navigation}
           activeTintColor={activeTintColor}
           indicatorStyle={indicatorStyle}
+          inactiveTintColor={inactiveTintColor}
           style={tabBarStyle.tabBar}
         />
         <TouchClick style={tabBarStyle.categoryBtn} onPress={handleToCategory}>

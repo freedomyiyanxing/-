@@ -6,12 +6,35 @@ import HomeTabBar from '@navigator/home-tab-bar';
 import Home from '@pages/home';
 import { AppStore } from '@store/index';
 import { HOME_INFO } from '@store/home-store/types';
+import storage from '@config/storage';
+import { homeCategoryListActive } from '@store/home-store/action';
 
-const Tab = createMaterialTopTabNavigator();
+type HomeParamList = {
+  [key: string]: undefined;
+};
 
-class HomeTabs extends React.PureComponent {
-  render(): React.ReactElement {
-    console.log('什么时候开始执行');
+interface IProps {
+  homeInfo: HOME_INFO;
+  handleCategoryListActive: typeof homeCategoryListActive;
+}
+
+const Tab = createMaterialTopTabNavigator<HomeParamList>();
+
+class HomeTabs extends React.PureComponent<IProps> {
+  componentDidMount(): void {
+    const { handleCategoryListActive } = this.props;
+    storage
+      .load({
+        key: 'myCategoryList',
+      })
+      .then((res) => {
+        handleCategoryListActive(res);
+      });
+  }
+
+  render(): React.ReactElement | null {
+    const { homeInfo } = this.props;
+    console.log('执行了几次', homeInfo.myCategoryList.length);
     return (
       <Tab.Navigator
         lazy
@@ -20,7 +43,7 @@ class HomeTabs extends React.PureComponent {
         tabBarOptions={{
           scrollEnabled: true,
           activeTintColor: '#f86c1a',
-          inactiveTintColor: '#999999',
+          inactiveTintColor: '#333',
           tabStyle: {
             width: 80,
             height: 40,
@@ -33,13 +56,16 @@ class HomeTabs extends React.PureComponent {
             backgroundColor: '#f86c1a',
           },
         }}>
-        <Tab.Screen
-          name="home"
-          component={Home}
-          options={{
-            tabBarLabel: '推荐',
-          }}
-        />
+        {homeInfo.myCategoryList.map((item) => (
+          <Tab.Screen
+            key={item.id}
+            name={item.id}
+            component={Home}
+            options={{
+              tabBarLabel: item.name,
+            }}
+          />
+        ))}
       </Tab.Navigator>
     );
   }
@@ -55,4 +81,6 @@ const mapStateProps = (state: AppStore): HOME_INFO | object => ({
   homeInfo: state.homeInfo,
 });
 
-export default connect(mapStateProps)(HomeTabs);
+export default connect(mapStateProps, {
+  handleCategoryListActive: homeCategoryListActive,
+})(HomeTabs);
