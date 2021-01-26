@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Alert } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { ListItemTypes } from '@pages/home/request';
 import IconFont from '@assets/iconfont';
 import TouchClick from '@components/touchable/Touchable-click';
@@ -9,7 +9,7 @@ interface IItemProps {
   item: ListItemTypes;
 }
 
-const Item: React.FC<IItemProps> = ({ item, onPress }) => (
+const ListItem: React.FC<IItemProps> = ({ item, onPress }) => (
   <TouchClick style={style.wrapper} onPress={() => onPress(item)}>
     <Image source={{ uri: item.image }} style={style.image} />
     <View style={style.right}>
@@ -32,15 +32,6 @@ const Item: React.FC<IItemProps> = ({ item, onPress }) => (
     </View>
   </TouchClick>
 );
-
-const RenderItem = ({ item }: { item: ListItemTypes }) => {
-  const handlePress = (data: ListItemTypes): void => {
-    console.log(data);
-    Alert.alert(JSON.stringify(data));
-  };
-
-  return <Item onPress={handlePress} item={item} />;
-};
 
 const style = StyleSheet.create({
   wrapper: {
@@ -90,4 +81,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default RenderItem;
+export default ListItem;

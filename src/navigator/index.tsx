@@ -15,10 +15,19 @@ import Details from '@pages/details';
 import IndexBottomTab from './index-bottom-tabs';
 import TestBottomTab from './test-bottom-tabs';
 import Category from '@pages/category';
+import Album from '@pages/album';
+import getAlbumOptions from '@pages/album/utils';
 
 export type RootStackParamList = {
   IndexBottomTab: undefined;
   TestBottomTab: undefined;
+  Album: {
+    item: {
+      id: string;
+      title: string;
+      image: string;
+    };
+  };
   Details: {
     id: number;
   };
@@ -59,8 +68,9 @@ const Navigator: React.FC = () => {
           },
         }}>
         <Stack.Screen name="IndexBottomTab" component={IndexBottomTab} />
-        <Stack.Screen name="Category" component={Category} options={{ headerTitle: '分类页面' }} />
         <Stack.Screen name="TestBottomTab" component={TestBottomTab} />
+        <Stack.Screen name="Category" component={Category} options={{ headerTitle: '分类页面' }} />
+        <Stack.Screen name="Album" component={Album} options={getAlbumOptions} />
         <Stack.Screen name="Details" component={Details} options={{ headerTitle: '详情页面' }} />
       </Stack.Navigator>
     </NavigationContainer>

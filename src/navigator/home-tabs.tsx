@@ -29,6 +29,9 @@ class HomeTabs extends React.PureComponent<IProps> {
       })
       .then((res) => {
         handleCategoryListActive(res);
+      })
+      .catch(() => {
+        console.log('没有缓存');
       });
   }
 

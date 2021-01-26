@@ -4,11 +4,12 @@ import { FlatList, RefreshControl, NativeSyntheticEvent, NativeScrollEvent } fro
 import { RootStackNavigation } from '@navigator/index';
 import Guess from '@pages/home/guess';
 import TopCarousel from '@pages/home/top-carousel';
-import RenderItem from '@pages/home/list';
+import ListItem from '@pages/home/list';
 import Loading from '@components/loading';
 import NoMore from '@components/no-more';
 import { getHomeList, ListItemTypes } from '@pages/home/request';
 import { slidHeight } from '@components/carousel/render-item';
+import { GuessDataTypes } from '@pages/home/request';
 import { AppStore } from '@store/index';
 import { HOME_INFO } from '@store/home-store/types';
 import { homeIsLinearGradientActive } from '@store/home-store/action';
@@ -84,6 +85,20 @@ class Home extends React.Component<IProps, IState> {
     }
   };
 
+  // 跳转到频道页面
+  handleGoToAlbum = (item: GuessDataTypes | ListItemTypes): void => {
+    const { navigation } = this.props;
+    navigation.navigate('Album', { item });
+  };
+
+  renderItem = ({ item }: { item: ListItemTypes }) => {
+    const handlePress = (data: ListItemTypes): void => {
+      this.handleGoToAlbum(data);
+    };
+
+    return <ListItem onPress={handlePress} item={item} />;
+  };
+
   render() {
     const { data, isMore, loading } = this.state;
     return (
@@ -91,11 +106,11 @@ class Home extends React.Component<IProps, IState> {
         ListHeaderComponent={
           <>
             <TopCarousel />
-            <Guess />
+            <Guess goToAlbum={this.handleGoToAlbum} />
           </>
         }
         data={data}
-        renderItem={RenderItem}
+        renderItem={this.renderItem}
         keyExtractor={(item) => item.id}
         onEndReachedThreshold={0.2}
         onEndReached={this.handleEndReached}

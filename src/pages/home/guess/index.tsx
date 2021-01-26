@@ -1,21 +1,24 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Alert } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import IconFont from '@assets/iconfont';
 import { getHomeGuessList, GuessDataTypes } from '@pages/home/request';
 import TouchClick from '@components/touchable/Touchable-click';
 
+type goToAlbumType = (item: GuessDataTypes) => void;
+
 interface IProps {
   data: Array<GuessDataTypes>;
+  goToAlbum: goToAlbumType;
 }
 
 interface IState {
   data: Array<GuessDataTypes> | null;
 }
 
-const RenderItem: React.FC<IProps> = ({ data }) => (
+const RenderItem: React.FC<IProps> = ({ data, goToAlbum }) => (
   <>
     {data.map((item) => (
-      <TouchClick key={item.id} style={style.item} onPress={() => Alert.alert(item.id)}>
+      <TouchClick key={item.id} style={style.item} onPress={() => goToAlbum(item)}>
         <Image source={{ uri: item.image }} style={style.image} />
         <Text style={style.title} numberOfLines={2}>
           {item.title}
@@ -25,8 +28,12 @@ const RenderItem: React.FC<IProps> = ({ data }) => (
   </>
 );
 
-class Guess extends React.PureComponent<object, IState> {
-  constructor(props: IProps) {
+interface GuessProps {
+  goToAlbum: goToAlbumType;
+}
+
+class Guess extends React.PureComponent<GuessProps, IState> {
+  constructor(props: GuessProps) {
     super(props);
 
     this.state = {
@@ -49,6 +56,7 @@ class Guess extends React.PureComponent<object, IState> {
   };
 
   render(): React.ReactElement | null {
+    const { goToAlbum } = this.props;
     const { data } = this.state;
 
     return (
@@ -63,7 +71,9 @@ class Guess extends React.PureComponent<object, IState> {
             <IconFont name="icon-more" color="#999999" size={14} />
           </View>
         </View>
-        <View style={style.list}>{data?.length ? <RenderItem data={data} /> : null}</View>
+        <View style={style.list}>
+          {data?.length ? <RenderItem data={data} goToAlbum={goToAlbum} /> : null}
+        </View>
         <TouchClick style={style.footerContainer} onPress={this.handleChangeBatch}>
           <IconFont name="icon-huanyipi" color="#f86c1a" size={14} />
           <Text style={style.text}>换一批</Text>
