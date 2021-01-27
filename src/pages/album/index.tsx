@@ -1,17 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { get } from '@config/http';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '@navigator/index';
 import { useHeaderHeight } from '@react-navigation/stack';
 import AlbumHeader from './album-header';
+import Tab from './tab';
 
 type authorType = {
   name: string;
   avatar: string;
 };
 
-type albumListType = {
+export type albumListType = {
   id: string;
   title: string;
   duration: string;
@@ -19,7 +20,7 @@ type albumListType = {
   date: string;
 };
 
-type albumType = {
+export type albumType = {
   id: string;
   title: string;
   summary: string;
@@ -66,15 +67,19 @@ class Album extends React.PureComponent<IProps, IState> {
     }
   };
 
+  goToDetails = (id: string) => {
+    console.log(id);
+    Alert.alert(id);
+  };
+
   render(): React.ReactElement | null {
     const { headerHeight, route } = this.props;
     const { data } = this.state;
-    console.log(data);
     if (!data) {
       return null;
     }
     return (
-      <View>
+      <View style={style.container}>
         <AlbumHeader
           headerHeight={headerHeight}
           data={{
@@ -83,16 +88,16 @@ class Album extends React.PureComponent<IProps, IState> {
             summary: data.summary,
           }}
         />
-        <View style={style.container}>
-          <Text>111 </Text>
-        </View>
+        <Tab data={data} goToDetails={this.goToDetails} />
       </View>
     );
   }
 }
 
 const style = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+  },
 });
 
 // 使用函数组件套class组件 方便使用 useHeaderHeight 的 hooks组件 useHeaderHeight获取导航栏高度
