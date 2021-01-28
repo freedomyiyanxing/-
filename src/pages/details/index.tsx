@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '@navigator/index';
+import { FullStackParamList } from '@navigator/index';
 
 interface IProps {
-  route: RouteProp<RootStackParamList, 'Details'>;
+  route: RouteProp<FullStackParamList, 'Details'>;
 }
 
 const Details: React.FC<IProps> = ({ route }) => {

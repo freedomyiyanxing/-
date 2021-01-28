@@ -9,7 +9,7 @@ interface IProps {
 const Account: React.FC<IProps> = ({ navigation }) => {
   const onPress = (): void => {
     navigation.navigate('Details', {
-      id: 100,
+      id: 'Account',
     });
   };
 

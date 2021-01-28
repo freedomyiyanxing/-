@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { get } from '@config/http';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '@navigator/index';
+import { FullStackNavigation } from '@navigator/index';
 import { useHeaderHeight } from '@react-navigation/stack';
 import AlbumHeader from './album-header';
 import Tab from './tab';
@@ -31,6 +32,7 @@ export type albumType = {
 };
 
 interface IProps {
+  navigation: FullStackNavigation;
   route: RouteProp<RootStackParamList, 'Album'>;
   headerHeight: number;
 }
@@ -68,8 +70,10 @@ class Album extends React.PureComponent<IProps, IState> {
   };
 
   goToDetails = (id: string) => {
-    console.log(id);
-    Alert.alert(id);
+    const { navigation } = this.props;
+    navigation.navigate('Details', {
+      id,
+    });
   };
 
   render(): React.ReactElement | null {

@@ -17,7 +17,7 @@ const Item = ({ item, index }: ListRenderItemInfo<albumListType>) => (
     <View style={style.center}>
       <Text style={style.title}>{item.title}</Text>
       <View style={style.bomWrapper}>
-        <IconFont name="icon-zai-ting" size={14} color="#999" />
+        <IconFont name="icon-music" size={14} color="#999" />
         <Text style={style.text}>{item.playVolume}</Text>
         <IconFont name="icon-zai-ting" size={14} color="#999" />
         <Text style={style.text}>{item.duration}</Text>
@@ -73,7 +73,7 @@ const style = StyleSheet.create({
     lineHeight: 13,
     fontSize: 12,
     color: '#9f9f9f',
-    marginRight: 10,
+    marginRight: 20,
     marginLeft: 4,
   },
   date: {

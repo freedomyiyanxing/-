@@ -68,7 +68,7 @@ class Guess extends React.PureComponent<GuessProps, IState> {
           </View>
           <View style={style.right}>
             <Text style={style.text}>更多</Text>
-            <IconFont name="icon-more" color="#999999" size={14} />
+            <IconFont name="icon-arrow-right" color="#999999" size={14} />
           </View>
         </View>
         <View style={style.list}>
