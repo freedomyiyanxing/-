@@ -104,7 +104,7 @@ const FullStackScreen: React.FC = () => (
     screenOptions={{
       headerTitleAlign: 'center',
       gestureEnabled: true, // 手势关闭
-      ...TransitionPresets.ModalSlideFromBottomIOS, // 手势关闭(Ios 跟 android 保持一致)
+      ...TransitionPresets.RevealFromBottomAndroid, // 页面关闭过渡动画
       headerBackTitleVisible: false, // 隐藏ios返回标题
     }}>
     <FullStack.Screen name="Root" component={RootStackScreen} options={{ headerShown: false }} />
