@@ -19,6 +19,7 @@ export type albumListType = {
   duration: string;
   playVolume: string;
   date: string;
+  thumbnailUrl: string;
 };
 
 export type albumType = {
@@ -69,10 +70,10 @@ class Album extends React.PureComponent<IProps, IState> {
     }
   };
 
-  goToDetails = (id: string) => {
+  goToDetails = (item: albumListType) => {
     const { navigation } = this.props;
     navigation.navigate('Details', {
-      id,
+      item,
     });
   };
 

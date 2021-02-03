@@ -15,6 +15,7 @@ import HomeTabs from '@navigator/home-tabs';
 type RootTabParamList = {
   homeTabs: undefined;
   listen: undefined;
+  play: undefined;
   found: undefined;
   account: undefined;
 };
@@ -98,6 +99,24 @@ const IndexBottomTab: React.FC<IProps> = ({ navigation, route }) => {
           component={Listen}
           options={{
             tabBarLabel: '我听',
+            tabBarIcon: ({ color, size }): React.ReactNode => (
+              <IconFont name="icon-wo-ting" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="play"
+          component={Listen}
+          options={{
+            tabBarLabel: '测试',
+            tabBarBadge: 1,
+            tabBarBadgeStyle: {
+              top: -10,
+              fontSize: 10,
+              width: 20,
+              height: 20,
+              lineHeight: 16,
+            },
             tabBarIcon: ({ color, size }): React.ReactNode => (
               <IconFont name="icon-wo-ting" color={color} size={size} />
             ),

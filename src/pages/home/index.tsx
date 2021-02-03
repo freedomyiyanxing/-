@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import SplashScreen from 'react-native-splash-screen';
 import { FlatList, RefreshControl, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { RootStackNavigation } from '@navigator/index';
 import Guess from '@pages/home/guess';
@@ -42,6 +43,9 @@ class Home extends React.Component<IProps, IState> {
     this.setState({
       data: result.data.result,
     });
+
+    // 关闭启动页
+    SplashScreen.hide();
   }
 
   loadData = async () => {

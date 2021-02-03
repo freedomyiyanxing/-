@@ -48,15 +48,18 @@ class HomeTabs extends React.PureComponent<IProps> {
           activeTintColor: '#f86c1a',
           inactiveTintColor: '#333',
           tabStyle: {
-            width: 80,
+            width: 82,
             height: 40,
           },
           indicatorStyle: {
             height: 2,
             width: 20,
-            marginLeft: 30,
+            marginLeft: 31,
             borderRadius: 2,
             backgroundColor: '#f86c1a',
+          },
+          labelStyle: {
+            margin: 0,
           },
         }}>
         {homeInfo.myCategoryList.map((item) => (

@@ -18,7 +18,7 @@ import IndexBottomTab from './index-bottom-tabs';
 // 三级标签导航
 import TestBottomTab from './test-bottom-tabs';
 import Category from '@pages/category';
-import Album from '@pages/album';
+import Album, { albumListType } from '@pages/album';
 import Details from '@pages/details';
 
 import getAlbumOptions from '@pages/album/utils';
@@ -29,7 +29,7 @@ export type RootStackParamList = {
   TestBottomTab: undefined;
   Category: undefined;
   Details: {
-    id: string;
+    item: albumListType;
   };
   Album: {
     item: {
@@ -85,7 +85,7 @@ const RootStackScreen: React.FC = () => (
 export type FullStackParamList = {
   Root: undefined;
   Details: {
-    id: string;
+    item: albumListType;
   };
 };
 
@@ -148,6 +148,7 @@ const Navigator: React.FC = () => {
 const style = StyleSheet.create({
   headerBackImage: {
     marginHorizontal: Platform.OS === 'android' ? 0 : 8, // 设置不同平台的样式
+    marginTop: 0,
   },
 });
 

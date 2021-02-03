@@ -6,7 +6,7 @@ import TouchClick from '@components/touchable/Touchable-click';
 
 interface IProps {
   data: Array<albumListType>;
-  goToDetails: (id: string) => void;
+  goToDetails: (id: albumListType) => void;
 }
 
 const Item = ({ item, index }: ListRenderItemInfo<albumListType>) => (
@@ -31,7 +31,7 @@ const List: React.FC<IProps> = ({ data, goToDetails }) => (
   <FlatList
     data={data}
     renderItem={({ item, index, separators }) => (
-      <TouchClick key={item.id} onPress={() => goToDetails(item.id)}>
+      <TouchClick key={item.id} onPress={() => goToDetails(item)}>
         <Item item={item} index={index} separators={separators} />
       </TouchClick>
     )}

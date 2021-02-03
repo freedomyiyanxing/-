@@ -3,12 +3,12 @@ import { Dimensions, Platform, StyleSheet, Text } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Introduction from './introduction';
 import List from './list';
-import { albumType } from './index';
+import { albumListType, albumType } from './index';
 import { SceneRendererProps } from 'react-native-tab-view/lib/typescript/src/types';
 
 interface IProps {
   data: albumType;
-  goToDetails: (id: string) => void;
+  goToDetails: (item: albumListType) => void;
 }
 
 const initialLayout = {

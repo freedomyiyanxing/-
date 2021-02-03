@@ -22,7 +22,7 @@ export const initPlayer = (filepath: string) =>
   });
 
 /**
- * 开始播放
+ * 开始播放 播放完成才执行回调
  */
 export const play = () =>
   new Promise((resolve, reject) => {
@@ -57,9 +57,7 @@ export const stop = () =>
 export const getCurrentTime = () =>
   new Promise((resolve, reject) => {
     if (sound && sound.isLoaded()) {
-      sound.getCurrentTime((seconds) => {
-        resolve(seconds);
-      });
+      sound.getCurrentTime(resolve);
     } else {
       reject(0);
     }
