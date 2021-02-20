@@ -38,10 +38,11 @@ class Home extends React.Component<IProps, IState> {
     };
   }
 
-  async componentDidMount(): Promise<void> {
-    const result = await getHomeList();
-    this.setState({
-      data: result.data.result,
+  componentDidMount(): void {
+    getHomeList().then((result) => {
+      this.setState({
+        data: result.data.result,
+      });
     });
 
     // 关闭启动页
